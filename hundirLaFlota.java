@@ -27,36 +27,116 @@ public class hundirLaFlota {
         return tableroVacio;
     }
 
-    static String solicitarCasilla(){
+    static String solicitarCasilla(){ //Compribar si la casilla existe en el tablero
+        boolean letraCorrecta = false;
+        boolean numeroCorrecto = false;
+        String casillaElegida = "";
+        
         System.out.println("Dime la casilla. (Por ejemplo: A5)");
-        String casillaElegida = entradaDatos.nextLine();
+        while (letraCorrecta != true || numeroCorrecto != true) {
+            casillaElegida = entradaDatos.nextLine();
+            for (int letra = 0; letra < letrasTablero.length; letra++) { //Comprueba si existe la fila
+                if (casillaElegida.substring(0, 1).equalsIgnoreCase(letrasTablero[letra])) {
+                    letraCorrecta = true;
+                    break;
+                }
+            }
+        
+            for (int numero = 0; numero < letrasTablero.length; numero++) { //Comprueba si existe la columna
+                if (casillaElegida.substring(1, 2).equalsIgnoreCase(numerosTablero[numero])) {
+                    numeroCorrecto = true; 
+                    break;
+                }
+            }
 
-        //FALTA. Comprobar si la casilla existe, es decir, que esté dentro de los valores del tablero
+            System.out.println(letraCorrecta != true || numeroCorrecto != true ?"La casilla es incorrecta, por favor inténtelo de nuevo.": "");
+        }
 
         return casillaElegida;
     }
 
-    static String comprobarCasilla(String casillaUsuario){
-        String casillaUsuarioComprobada = "";
+    static int [] indiceCasilla(String casillaElegida) {
+        int [] indiceCasillas = new int [2];
 
-        //comprobar si esta o no ocupada
-        // Para comprobarlo hacerlo con substrings no con charAt
+        for (int letras = 0; letras < letrasTablero.length; letras++) { //Sacar indice filas
+            if (letrasTablero[letras].equals(casillaElegida.substring(0, 1))) {
+                indiceCasillas[0] = letras +1;
+            }
+        }
+
+        for (int numeros = 0; numeros < numerosTablero.length; numeros++) { //Sacar indice filas
+            if (numerosTablero[numeros].equals(casillaElegida.substring(1, 2))) {
+                indiceCasillas[1] = numeros +1;
+            }
+        }
+
+        return indiceCasillas;
+    }
+
+    static void comprobarCasillaVacia(String casillaElegida, String [][] tablero){ //Falta comprobar que contenido tiene la casilla
         
-        System.out.println(casillaUsuario.substring(0, 1));
+        // switch (tablero[casillaElegida.indexOf(casillaElegida.substring(0, 1))][casillaElegida.indexOf(casillaElegida.substring(1, 2))]) {
+        //     case "~", "T", "H":
+        //         return false;
+        //         break;
 
-        return casillaUsuarioComprobada;
+        
+        //     default:
+        //         break;
+        // }
+        
+
+    }
+
+    static int verticalOHorizontal(){
+        //Si sale 0 es Vertical, si sale 1 es Horizontal.
+        int alineacion = (int)(Math.random() * 2); // De 0 a 1.
+        
+        System.out.println("test, salió " + alineacion);
+        return alineacion;
+    }
+
+
+    static int posicionIndiceBarcoAleatorio(int posicion, array[][]){
+        int posicionBarco = (int)(Math.random()* array.length - 1) + 1; // Restamos 1 al array.lenght para que no de error de lenght.
+
+        
+
+        return posicionBarco;
+    }
+
+    static String [][] asignacionIndiceBarco(String array[][], int posicionFila, int posicionColumna){
+
+        int tamanyo = 3;
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                if ( i == posicionFila && j == posicionColumna) {
+                    if (verticalOHorizontal() == 0) { // 0 es Vertical, 1 es Horizontal
+                        for (int h = 0; h < tamanyo - 1; h++) {
+                            array[i + h][j] = "B";
+                        }
+                    }
+                }
+            }
     }
     
 
     public static void main(String[] args) {
-        System.out.println(comprobarCasilla(solicitarCasilla()));
 
         String [][] tableroVacio = crearTableroVacio(letrasTablero, numerosTablero);
-        for (int i = 0; i < tableroVacio.length; i++) {
-            for (int j = 0; j < tableroVacio[i].length; j++) {
-                System.out.print(tableroVacio[i][j] + " ");
-            }
-            System.out.println("");
-        }
+        // for (int filas = 0; filas < tableroVacio.length; filas++) {
+        //     for (int columnas = 0; columnas < tableroVacio[filas].length; columnas++) {
+        //         System.out.print(tableroVacio[filas][columnas] + " ");
+        //     }
+        //     System.out.println("");
+        // }
+
+        String casillaElegida = solicitarCasilla();
+        System.out.println(casillaElegida);
+        System.out.println(casillaElegida.substring(0,1));
+        System.out.println(casillaElegida.substring(1,2));
+
+        comprobarCasillaVacia(casillaElegida, tableroVacio);
+    
     }
 }
