@@ -73,19 +73,19 @@ public class hundirLaFlota {
         return indiceCasillas;
     }
 
-    static void comprobarCasillaVacia(String casillaElegida, String [][] tablero){ //Falta comprobar que contenido tiene la casilla
+    static String comprobarCasilla(int [] indiceCasillas, String [][] tablero){ //Falta comprobar que contenido tiene la casilla
         
-        // switch (tablero[casillaElegida.indexOf(casillaElegida.substring(0, 1))][casillaElegida.indexOf(casillaElegida.substring(1, 2))]) {
-        //     case "~", "T", "H":
-        //         return false;
-        //         break;
-
-        
-        //     default:
-        //         break;
-        // }
-        
-
+        switch (tablero[indiceCasillas[0]][indiceCasillas[1]]) {
+            case "~":
+                return "~";
+            case "B":
+                return "B";
+            case "T":
+                return "T";
+            case "H":
+                return "H";
+        }
+        return "";
     }
 
     static int verticalOHorizontal(){
@@ -99,8 +99,6 @@ public class hundirLaFlota {
 
     static int posicionIndiceBarcoAleatorio(int posicion, array[][]){
         int posicionBarco = (int)(Math.random()* array.length - 1) + 1; // Restamos 1 al array.lenght para que no de error de lenght.
-
-        
 
         return posicionBarco;
     }
@@ -118,8 +116,8 @@ public class hundirLaFlota {
                     }
                 }
             }
+        }
     }
-    
 
     public static void main(String[] args) {
 
@@ -136,7 +134,6 @@ public class hundirLaFlota {
         System.out.println(casillaElegida.substring(0,1));
         System.out.println(casillaElegida.substring(1,2));
 
-        comprobarCasillaVacia(casillaElegida, tableroVacio);
     
     }
 }
