@@ -84,6 +84,8 @@ public class hundirLaFlota {
                 return "T";
             case "H":
                 return "H";
+            case "F":
+                return "F";
         }
         return "";
     }
@@ -97,26 +99,52 @@ public class hundirLaFlota {
     }
 
 
-    static int posicionIndiceBarcoAleatorio(int posicion, array[][]){
+    static int posicionBarcoAleatorio(int posicion, array[][]){
         int posicionBarco = (int)(Math.random()* array.length - 1) + 1; // Restamos 1 al array.lenght para que no de error de lenght.
 
         return posicionBarco;
     }
 
-    static String [][] asignacionIndiceBarco(String array[][], int posicionFila, int posicionColumna){
+    static String [][] cabeONo(String tablero[][], int posicion[], int verticalOHorizontal){
 
-        int tamanyo = 3;
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                if ( i == posicionFila && j == posicionColumna) {
-                    if (verticalOHorizontal() == 0) { // 0 es Vertical, 1 es Horizontal
-                        for (int h = 0; h < tamanyo - 1; h++) {
-                            array[i + h][j] = "B";
+            //Aquí vamos a intentar ver si el barco cabe, en caso de que no quepa verticalmente hacia abajo o arriba, enviamos que NO CABE, igualmente si es horizontal, vemos si cabe por abajo o por arriba, y si no es así, enviamos QUE NO CABE.
+            //También debo de tener en cuenta si hay un Barco de por medio, es decir que si en esa casilla hay un B (de barco), no deberia de poder caber.
+
+            //Recibo posicion[], que es un array que contiene la fila y la columna de forma correspondiente.
+
+            // Tenemos la variable tamaño (mas adelante debo de tratarlo, pero por ahora lo dejaremos con una variable fija :D)
+            int tamanyo = 3;
+            int[] arrayCualesCaben = new int[tamanyo];
+
+            int posicionFila = posicion[0];
+            int posicionColumna = posicion[1];
+
+            boolean cabe = false;
+
+            int direccion = verticalOHorizontal; // 0 si es horizontal, 1 si es vertical.
+
+            if (direccion == 0) { // Si es Horizontal.
+                for (int fila = 0; fila < tamanyo; fila++) {
+                    for (int columna = 0; columna < tamanyo; columna++) {
+                        if (tablero[fila][columna].contentEquals("B") || posicionFila + tamanyo - 1 >= tablero.length  ) {
+                            cabe = false;
+                        } else{
+                            cabe = true;
+                        }
+                    }
+                }
+            } else{ //Si es Vertical
+                for (int fila = 0; fila < tamanyo; fila++) {
+                    for (int columna = 0; columna < tamanyo; columna++) {
+                        if (tablero[fila][columna].contentEquals("B")  ) {
+                            cabe = false;
+                        } else{
+                            cabe = true;
                         }
                     }
                 }
             }
-        }
+
     }
 
     public static void main(String[] args) {

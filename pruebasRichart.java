@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class pruebasRichart {
@@ -6,8 +5,7 @@ public class pruebasRichart {
     static String[] letrasTablero = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" }; // Nombre filas
     static String[] numerosTablero = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }; // Nombre columnas
 
-    static String[][] crearTableroVacio(String[] letrasTablero, String[] numerosTablero) { // Creamos el tablero con
-                                                                                           // todo agua, sin barcos
+    static String[][] crearTableroVacio(String[] letrasTablero, String[] numerosTablero) { // Creamos el tablero con todo agua, sin barcos
         String[][] tableroVacio = new String[11][11];
 
         for (int filas = 0; filas < tableroVacio.length; filas++) {
@@ -50,8 +48,7 @@ public class pruebasRichart {
             }
 
             System.out.println(letraCorrecta != true || numeroCorrecto != true
-                    ? "La casilla es incorrecta, por favor inténtelo de nuevo."
-                    : "");
+                    ? "La casilla es incorrecta, por favor inténtelo de nuevo.": "");
         }
 
         return casillaElegida;
@@ -75,8 +72,7 @@ public class pruebasRichart {
         return indiceCasillas;
     }
 
-    static String comprobarCasilla(int[] indiceCasillas, String[][] tablero) { // Falta comprobar que contenido tiene la
-                                                                               // casilla
+    static String comprobarCasilla(int[] indiceCasillas, String[][] tablero) { // Falta comprobar que contenido tiene la casilla
 
         switch (tablero[indiceCasillas[0]][indiceCasillas[1]]) {
             case "~":
@@ -87,13 +83,19 @@ public class pruebasRichart {
                 return "T";
             case "H":
                 return "H";
+            case "F":
+                return "F";
         }
         return "";
     }
 
+    static void cambiarTablero(int [][] casillas, int[] [] tablero){
+
+    }
+
     public static void main(String[] args) {
 
-        String[][] tableroVacio = crearTableroVacio(letrasTablero, numerosTablero);
+        String[][] tablero = crearTableroVacio(letrasTablero, numerosTablero);
         // for (int filas = 0; filas < tableroVacio.length; filas++) {
         // for (int columnas = 0; columnas < tableroVacio[filas].length; columnas++) {
         // System.out.print(tableroVacio[filas][columnas] + " ");
@@ -104,7 +106,7 @@ public class pruebasRichart {
         String casillaElegida = solicitarCasilla();
         int[] indiceCasilla = indiceCasilla(casillaElegida);
 
-        System.out.println(comprobarCasilla(indiceCasilla, tableroVacio));
+        System.out.println(comprobarCasilla(indiceCasilla, tablero));
 
     }
 }
