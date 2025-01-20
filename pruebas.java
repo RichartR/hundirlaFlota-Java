@@ -1,133 +1,131 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class pruebas {
     static Scanner entradaDatos = new Scanner(System.in);
-    static String[] letrasTablero = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" }; // Nombre filas
-    static String[] numerosTablero = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }; // Nombre columnas
+    static String[] letrasTablero = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+    static String[] numerosTablero = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
-    static String[][] crearTableroVacio(String[] letrasTablero, String[] numerosTablero) { // Creamos el tablero con todo agua, sin barcos
-        String[][] tableroVacio = new String[11][11];
-
-        for (int filas = 0; filas < tableroVacio.length; filas++) {
-            for (int columnas = 0; columnas < tableroVacio[filas].length; columnas++) {
-                if (filas == 0 && columnas == 0) {
-                    tableroVacio[filas][columnas] = " ";
-                } else if (filas == 0) {
-                    tableroVacio[filas][columnas] = numerosTablero[columnas - 1];
-                } else if (columnas == 0) {
-                    tableroVacio[filas][columnas] = letrasTablero[filas - 1];
-                } else {
-                    tableroVacio[filas][columnas] = "~";
-                }
+    static String[][] crearTableroVacio() { //Generar tablero base
+        String[][] tablero = new String[11][11];
+        for (int filas = 0; filas < tablero.length; filas++) {
+            for (int columnas = 0; columnas < tablero[filas].length; columnas++) {
+                tablero[filas][columnas] = (filas == 0 && columnas == 0) ? " " : (filas == 0) ? numerosTablero[columnas - 1] : (columnas == 0) ? letrasTablero[filas - 1] : "~";
             }
         }
-
-        return tableroVacio;
+        return tablero;
     }
 
-    static String solicitarCasilla() { // Compribar si la casilla existe en el tablero
-        boolean letraCorrecta = false;
-        boolean numeroCorrecto = false;
-        String casillaElegida = "";
-
-        System.out.println("Dime la casilla. (Por ejemplo: A5)");
-        while (letraCorrecta != true || numeroCorrecto != true) {
-            casillaElegida = entradaDatos.nextLine();
-            for (int letra = 0; letra < letrasTablero.length; letra++) { // Comprueba si existe la fila
-                if (casillaElegida.substring(0, 1).equalsIgnoreCase(letrasTablero[letra])) {
-                    letraCorrecta = true;
-                    break;
-                }
+    static String elegirModo() { //Elegir el modo de colocar los barcos
+        boolean modoValido = false;
+        String modo;
+        do {
+            System.out.println("¿Colocar barcos manual o automático? [M / A]");
+            modo = entradaDatos.nextLine().trim().toUpperCase();
+            if (!modo.isEmpty() && (modo.substring(0, 1).equalsIgnoreCase("M") ||
+                    modo.substring(0, 1).equalsIgnoreCase("A"))) {
+                modoValido = true;
+            } else {
+                System.out.println("No has introducido un modo correcto, inténtelo de nuevo.");
             }
-
-            for (int numero = 0; numero < letrasTablero.length; numero++) { // Comprueba si existe la columna
-                if (casillaElegida.substring(1, 2).equalsIgnoreCase(numerosTablero[numero])) {
-                    numeroCorrecto = true;
-                    break;
-                }
-            }
-
-            System.out.println(letraCorrecta != true || numeroCorrecto != true
-                    ? "La casilla es incorrecta, por favor inténtelo de nuevo.": "");
-        }
-
-        return casillaElegida;
+        } while (!modoValido);
+        
+        return modo.substring(0, 1).equalsIgnoreCase("M") ? "Manual" : "Automático";
     }
 
-    static int[] indiceCasilla(String casillaElegida) {
-        int[] indiceCasillas = new int[2];
-
-        for (int letras = 0; letras < letrasTablero.length; letras++) { // Sacar indice filas
-            if (letrasTablero[letras].equals(casillaElegida.substring(0, 1))) {
-                indiceCasillas[0] = letras + 1;
-            }
-        }
-
-        for (int numeros = 0; numeros < numerosTablero.length; numeros++) { // Sacar indice filas
-            if (numerosTablero[numeros].equals(casillaElegida.substring(1, 2))) {
-                indiceCasillas[1] = numeros + 1;
-            }
-        }
-
-        return indiceCasillas;
+    static int[] generarIndice(String[][] tablero, String modo) { //Generar índice de la casilla dependiendo del modo
+        return modo.equals("Manual") ? generarIndiceUsuario() : posicionAleatoria(tablero);
     }
 
-    static String comprobarCasilla(int[] indiceCasillas, String[][] tablero) { // Falta comprobar que contenido tiene la casilla
-
-        switch (tablero[indiceCasillas[0]][indiceCasillas[1]]) {
-            case "~":
-                return "~";
-            case "B":
-                return "B";
-            case "T":
-                return "T";
-            case "H":
-                return "H";
-            case "F":
-                return "F";
-        }
-        return "";
+    static int[] generarIndiceUsuario() { //En base a la casilla del usuario
+        String casilla;
+        int[] indices = new int[2];
+        do {
+            System.out.println("Dime la casilla. (Por ejemplo: A5)");
+            casilla = entradaDatos.nextLine().trim().toUpperCase();
+        } while (!validarCasilla(casilla, indices));
+        return indices;
     }
 
-    static void cambiarTablero(int [][] casillas, int[] [] tablero){
+    static boolean validarCasilla(String casilla, int[] indices) {
+        if (casilla.length() < 2) return false;
+        String letra = casilla.substring(0, 1);
+        String numero = casilla.substring(1);
+        for (int i = 0; i < letrasTablero.length; i++) {
+            if (letrasTablero[i].equals(letra)) {
+                indices[0] = i + 1;
+                break;
+            }
+        }
+        for (int i = 0; i < numerosTablero.length; i++) {
+            if (numerosTablero[i].equals(numero)) {
+                indices[1] = i + 1;
+                break;
+            }
+        }
+        return indices[0] > 0 && indices[1] > 0;
+    }
 
+    static int[] posicionAleatoria(String[][] tablero) {
+        return new int[]{(int) (Math.random() * 10) + 1, (int) (Math.random() * 10) + 1};
+    }
+
+    static boolean validarEspacio(String[][] tablero, int[] posicion, int tamano, boolean esVertical) {
+        int fila = posicion[0], columna = posicion[1];
+        if (esVertical && fila + tamano > tablero.length) return false;
+        if (!esVertical && columna + tamano > tablero[0].length) return false;
+        for (int i = 0; i < tamano; i++) {
+            if (!tablero[esVertical ? fila + i : fila][esVertical ? columna : columna + i].equals("~")) return false;
+        }
+        return true;
+    }
+
+    static void colocarBarco(String[][] tablero, int[] posicion, int tamano, boolean esVertical) {
+        for (int i = 0; i < tamano; i++) {
+            if (esVertical) {
+                tablero[posicion[0] + i][posicion[1]] = "B";
+            } else {
+                tablero[posicion[0]][posicion[1] + i] = "B";
+            }
+        }
+    }
+
+    static void colocarBarcos(String[][] tablero, String modo) {
+        int[] barcos = {1, 1, 1, 2, 2, 3};
+        for (int tamano : barcos) {
+            int[] posicion;
+            boolean esVertical;
+            do {
+                posicion = generarIndice(tablero, modo);
+                esVertical = modo.equals("Manual") ? elegirDireccion() : Math.random() < 0.5;
+            } while (!validarEspacio(tablero, posicion, tamano, esVertical));
+            colocarBarco(tablero, posicion, tamano, esVertical);
+        }
+    }
+
+    static boolean elegirDireccion() {
+        String direccion;
+        do {
+            System.out.println("¿Vertical o Horizontal? [V / H]");
+            direccion = entradaDatos.nextLine().trim().toUpperCase();
+        } while (!direccion.equals("V") && !direccion.equals("H"));
+        return direccion.equals("V");
+    }
+
+    static void imprimirTablero(String[][] tablero) {
+        for (String[] fila : tablero) {
+            System.out.println(String.join(" ", fila));
+        }
     }
 
     public static void main(String[] args) {
+        System.out.println("===== Bienvenido a Hundir la Flota =====");
+        String[][] tableroJugador = crearTableroVacio();
+        String[][] tableroOculto = crearTableroVacio();
 
-        String[][] tablero = crearTableroVacio(letrasTablero, numerosTablero);
-        // for (int filas = 0; filas < tableroVacio.length; filas++) {
-        // for (int columnas = 0; columnas < tableroVacio[filas].length; columnas++) {
-        // System.out.print(tableroVacio[filas][columnas] + " ");
-        // }
-        // System.out.println("");
-        // }
+        String modo = elegirModo();
+        colocarBarcos(tableroOculto, modo);
 
-        // String casillaElegida = solicitarCasilla();
-        // int[] indiceCasilla = indiceCasilla(casillaElegida);
-
-        // System.out.println(comprobarCasilla(indiceCasilla, tablero));
-
-        int [][] prueba = {{3,7}, {0,0}, {0,0}};
-
-        for (int i = 0; i < prueba.length; i++) {
-            int [] indice = new int[2];
-            for (int j = 0; j < prueba[i].length; j++) {
-                if (prueba[i][j] != 0){
-                    indice[j] = prueba[i][j];
-                }
-            }
-            System.out.print(Arrays.toString(indice));
-            tablero[indice[0]][indice[1]] = "B";
-        }
-
-        for (int filas = 0; filas < tablero.length; filas++) {
-        for (int columnas = 0; columnas < tablero[filas].length; columnas++) {
-        System.out.print(tablero[filas][columnas] + " ");
-        }
-        System.out.println("");
-        }
-
+        System.out.println("\n¡Comienza el juego!");
+        imprimirTablero(tableroJugador);
     }
 }
