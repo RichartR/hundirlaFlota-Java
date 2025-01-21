@@ -31,7 +31,7 @@ public class hundirLaFlota {
             }
         } while (!modoValido);
 
-        modo = (modo.equals("M")) ? "Manual" : "Automático";
+        modo = (modo.substring(0, 1).equalsIgnoreCase("M")) ? "Manual" : "Automático";
 
         return modo;
     }
