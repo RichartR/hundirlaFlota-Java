@@ -343,7 +343,7 @@ public class hundirLaFlota {
                 tableroVisible[indiceCasilla[0]][indiceCasilla[1]] = "I";
                 tableroNoVisible[indiceCasilla[0]][indiceCasilla[1]] = "I";
                 break;
-            case "I":
+            case "I", "F":
                 System.out.println("Esa casilla ya ha sido utilizada, por favor inténtelo de nuevo");
                 break;
         }
