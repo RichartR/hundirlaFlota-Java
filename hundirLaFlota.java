@@ -334,17 +334,17 @@ public class hundirLaFlota {
 
         switch (casillaComprobada) {
             case "~":
-                System.out.println("¡Fallaste, solo había agua!");
+                System.out.println("\n¡Fallaste, solo había agua!");
                 tableroVisible[indiceCasilla[0]][indiceCasilla[1]] = "F";
                 tableroNoVisible[indiceCasilla[0]][indiceCasilla[1]] = "F";
                 break;
             case "B":
-                System.out.println("¡Impacto!");
+                System.out.println("\n¡Impacto!");
                 tableroVisible[indiceCasilla[0]][indiceCasilla[1]] = "I";
                 tableroNoVisible[indiceCasilla[0]][indiceCasilla[1]] = "I";
                 break;
             case "I", "F":
-                System.out.println("Esa casilla ya ha sido utilizada, por favor inténtelo de nuevo");
+                System.out.println("\nEsa casilla ya ha sido utilizada, por favor inténtelo de nuevo.");
                 break;
         }
     }
@@ -366,29 +366,35 @@ public class hundirLaFlota {
 
         int intentosTotales = 20;
 
-        while (intentosTotales > 0 && contadorBarcos(tableroNoVisible) > 1) {
-            int contadorBarcos = contadorBarcos(tableroNoVisible);
+        while (intentosTotales > 0 && contadorBarcos(tableroNoVisible)[0] > 1) {
+            int [] contadorBarcos = contadorBarcos(tableroNoVisible);
             disparar(tableroVisible, tableroNoVisible);
-            if (contadorBarcos == contadorBarcos(tableroNoVisible)) {
-                intentosTotales--;
+            if (contadorBarcos[0] == contadorBarcos(tableroNoVisible)[0] ) {
+                if (contadorBarcos[1] != contadorBarcos(tableroNoVisible)[1]) {
+                    intentosTotales--;
+                }
             }
             imprimirTablero(tableroVisible);
-            System.out.println("Te quedan " + intentosTotales + " intentos.");
+            System.out.println("Te quedan " + intentosTotales + " intentos.\n");
         }
 
         if (intentosTotales == 0) {
-            System.out.println("¡Has perdido!");
+            System.out.println("\n¡Has perdido!");
+            imprimirTablero(tableroNoVisible);
         } else {
-            System.out.println("¡Has ganado!");
+            System.out.println("\n¡Has ganado!");
+            imprimirTablero(tableroNoVisible);
         }
     }
 
-    static int contadorBarcos(String [][] tablero){ // Contador de Bs
-        int contador = 0;
+    static int [] contadorBarcos(String [][] tablero){ // Contador de Bs
+        int [] contador = {0, 0}; // [0] Barcos, [1] no agua
         for (int filas = 0; filas < tablero.length; filas++) {
             for (int columnas = 0; columnas < tablero[filas].length; columnas++) {
                 if (tablero[filas][columnas].equals("B")) {
-                    contador++;
+                    contador[0] += 1;
+                } else if (tablero[filas][columnas].equals("F") || tablero[filas][columnas].equals("I")) {
+                    contador[1] += 1;
                 }
             }
         }
