@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class hundirLaFlota {
@@ -54,23 +53,23 @@ public class hundirLaFlota {
         boolean letraCorrecta = false;
         boolean numeroCorrecto = false;
         String casillaElegida = "";
-
+    
         do {
             System.out.println("Dime la casilla. (Por ejemplo: A5)");
-
+    
             while (!entradaDatos.hasNextLine()) {
                 System.out.println("No has introducido un modo correcto, inténtelo de nuevo.");
                 entradaDatos.next();
                 System.out.println("Dime la casilla. (Por ejemplo: A5)");
             }
             casillaElegida = entradaDatos.nextLine().trim().toUpperCase();
-
+    
             // Longitud mínima
             if (casillaElegida.length() < 2) {
                 System.out.println("La casilla es incorrecta, por favor inténtelo de nuevo.");
                 continue; // Volver al inicio del bucle
             }
-
+    
             letraCorrecta = false;
             for (int letra = 0; letra < letrasTablero.length; letra++) { // Validar letra
                 if (casillaElegida.substring(0, 1).equalsIgnoreCase(letrasTablero[letra])) {
@@ -78,7 +77,7 @@ public class hundirLaFlota {
                     break;
                 }
             }
-
+    
             numeroCorrecto = false;
             if (casillaElegida.length() == 2) { // Validar el número
                 for (String numero : numerosTablero) {
@@ -92,45 +91,42 @@ public class hundirLaFlota {
                     numeroCorrecto = true;
                 }
             }
-
-            if (!letraCorrecta || !numeroCorrecto) { // Mensaje error
+    
+            if (!letraCorrecta || !numeroCorrecto) {
                 System.out.println("La casilla es incorrecta, por favor inténtelo de nuevo.");
             }
         } while (!letraCorrecta || !numeroCorrecto);
-
+    
         return casillaElegida;
     }
 
-    static int[] generarIndiceCasilla(String casillaElegida) {
+    static int[] generarIndiceCasilla(String casillaElegida) { //Para "traducir" la casilla a un índice
         int[] indiceCasillas = new int[2];
         for (int letras = 0; letras < letrasTablero.length; letras++) { // Indice letras
             if (letrasTablero[letras].equals(casillaElegida.substring(0, 1))) {
                 indiceCasillas[0] = letras + 1;
             }
         }
-
+    
         String numeroParte = casillaElegida.substring(1); // Indice columnas
         for (int numeros = 0; numeros < numerosTablero.length; numeros++) {
             if (numerosTablero[numeros].equals(numeroParte)) {
                 indiceCasillas[1] = numeros + 1;
             }
         }
-
+    
         return indiceCasillas;
     }
 
-    static String comprobarCasilla(int[] indiceCasillas, String[][] tablero) { // Falta comprobar que contenido tiene la
-                                                                               // casilla
+    static String comprobarCasilla(int[] indiceCasillas, String[][] tablero) { // comprobar valor que tiene la casilla
 
         switch (tablero[indiceCasillas[0]][indiceCasillas[1]]) {
             case "~":
                 return "~";
             case "B":
                 return "B";
-            case "T":
-                return "T";
-            case "H":
-                return "H";
+            case "I":
+                return "I";
             case "F":
                 return "F";
         }
@@ -172,21 +168,16 @@ public class hundirLaFlota {
         return posicionBarco;
     }
 
-    // Tenemos que crear un metodo con 6 barcos de diferentes tamaños.
-    // 1 Barco de tamaño 3
-    // 2 barcos de tamaño 2
-    // y 3 barcos de tamaño 1
+    // Tenemos que crear un metodo con 6 barcos de diferentes tamaños. 1 Barco de tamaño 3, 2 barcos de tamaño 2 y 3 barcos de tamaño 1
 
     public static int[][] cantidadBarcos() { // Primero va el barco y después el tamaño
         int[] barcoPeque = { 1, 1, 1 }; // 3 barcos de tamaño 1
         int[] barcoMedio = { 2, 2 }; // 2 barcos de tamaño 2
         int[] barcoGrande = { 3 }; // 1 barco de tamaño 3
         return new int[][] { barcoPeque, barcoMedio, barcoGrande };
-
     }
 
     static boolean cabeONo(String tablero[][], int posicion[], int tamanyo, int verticalOHorizontal) {
-
         int posicionFila = posicion[0];
         int posicionColumna = posicion[1];
 
@@ -331,7 +322,7 @@ public class hundirLaFlota {
     }
 
     static void cambiarTablero(int[] indiceCasilla, String[][] tableroVisible, String casillaComprobada, String[][] tableroNoVisible) {
-
+    
         switch (casillaComprobada) {
             case "~":
                 System.out.println("\n¡Fallaste, solo había agua!");
@@ -409,10 +400,7 @@ public class hundirLaFlota {
             System.out.println("");
         }
     }
-
     public static void main(String[] args) {
-
         juego();
-
     }
 }
