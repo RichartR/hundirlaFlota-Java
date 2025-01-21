@@ -257,7 +257,7 @@ public class hundirLaFlota {
             int direccion;
             int tamanyo;
             if (modo.equalsIgnoreCase("Manual")) {
-                System.out.println("Estás colocando el barco" + (i + 1) + " con tamaño tamaño 1");
+                System.out.println("Estás colocando el barco " + (i + 1) + " con tamaño tamaño 1.");
             }
 
             do {
@@ -278,7 +278,7 @@ public class hundirLaFlota {
             int direccion;
             int tamanyo;
             if (modo.equalsIgnoreCase("manual")) {
-                System.out.println("Estás colocando el barco" + (i + 1) + " con tamaño tamaño 2");
+                System.out.println("Estás colocando el barco " + (i + 1) + " con tamaño tamaño 2.");
             }
             do {
                 posicion = creacionIndiceModo(tablero, modo); // Declarada fuera del bloque
@@ -298,7 +298,7 @@ public class hundirLaFlota {
             int direccion;
             int tamanyo;
             if (modo.equalsIgnoreCase("manual")) {
-                System.out.println("Estás colocando el barco" + (i + 1) + " con tamaño tamaño 2");
+                System.out.println("Estás colocando el barco " + (i + 1) + " con tamaño tamaño 2.");
             }
             do {
                 posicion = creacionIndiceModo(tablero, modo); // Declarada fuera del bloque
